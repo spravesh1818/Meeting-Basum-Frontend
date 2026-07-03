@@ -7,12 +7,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router";
-import { logout } from "../services/AuthService";
+import { useAuth } from "../context/AuthContext";
 
-const Navbar = () => {
+const Navbar = ({ centerContent, rightContent, showLogo = false, showProfile = true }) => {
   const [time, setTime] = useState(new Date());
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -45,8 +46,20 @@ const Navbar = () => {
     year: "numeric",
   });
 
+  const displayName = user?.name || "User";
+
   return (
     <div className="navbar">
+
+      {/* LEFT */}
+      <div className="navbar-left">
+        {showLogo && <Logo />}
+      </div>
+
+      {/* CENTER */}
+      <div className="navbar-center">
+        {centerContent}
+      </div>
 
       {/* RIGHT */}
       <div className="navbar-right">
@@ -56,37 +69,41 @@ const Navbar = () => {
           <span>🕒 {formattedTime}</span>
         </div>
 
-        {/* Notification */}
-        <div className="notification">
-          <NotificationsIcon />
-        </div>
+        {rightContent}
 
-        {/* Profile */}
-        <div className="profile" onClick={() => setShowDropdown(!showDropdown)}>
-          <img src="/src/assets/mee.JPG" alt="profile" />
-          <span>Nitul Tako</span>
-          <ExpandMoreOutlinedIcon style={{ fontSize: "18px" }} />
-
-          {showDropdown && (
-            <div className="profile-dropdown-menu">
-              <div className="dropdown-item profile-item" onClick={() => navigate('/profile')}>
-                <PersonIcon />
-                <span>Profile</span>
-              </div>
-              <div className="dropdown-item settings-item" onClick={() => navigate('/profile')}>
-                <SettingsIcon />
-                <span>Settings</span>
-              </div>
-              <div className="dropdown-item logout-item" onClick={() => {
-                logout();
-                navigate('/login');
-              }}>
-                <LogoutIcon />
-                <span>Logout</span>
-              </div>
+        {showProfile && (
+          <>
+            <div className="notification">
+              <NotificationsIcon />
             </div>
-          )}
-        </div>
+
+            <div className="profile" onClick={() => setShowDropdown(!showDropdown)}>
+              <PersonIcon className="profile-avatar-icon" />
+              <span>{displayName}</span>
+              <ExpandMoreOutlinedIcon style={{ fontSize: "18px" }} />
+
+              {showDropdown && (
+                <div className="profile-dropdown-menu">
+                  <div className="dropdown-item profile-item" onClick={() => navigate('/profile')}>
+                    <PersonIcon />
+                    <span>Profile</span>
+                  </div>
+                  <div className="dropdown-item settings-item" onClick={() => navigate('/profile')}>
+                    <SettingsIcon />
+                    <span>Settings</span>
+                  </div>
+                  <div className="dropdown-item logout-item" onClick={() => {
+                    logout();
+                    navigate('/login');
+                  }}>
+                    <LogoutIcon />
+                    <span>Logout</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,18 +1,48 @@
 // src/context/AuthContext.tsx
 import { createContext, useContext, useState } from "react";
-import { getAccessToken, getRefreshToken, getUser } from "../utils/localstorage";
+import {
+    getAccessToken, getRefreshToken, getUser,
+    setAccessToken as persistAccessToken,
+    setRefreshToken as persistRefreshToken,
+    setUser as persistUser,
+    removeAccessToken, removeRefreshToken, removeUser,
+} from "../utils/localstorage";
 
 
 export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-    const [accessToken, setAccessToken] = useState(getAccessToken());
-    const [refreshToken, setRefreshToken] = useState(getRefreshToken());
-    const [user, setUser] = useState(getUser());
+    const [accessToken, setAccessTokenState] = useState(getAccessToken());
+    const [refreshToken, setRefreshTokenState] = useState(getRefreshToken());
+    const [user, setUserState] = useState(getUser());
+
+    const setAccessToken = (token) => {
+        persistAccessToken(token);
+        setAccessTokenState(token);
+    };
+
+    const setRefreshToken = (token) => {
+        persistRefreshToken(token);
+        setRefreshTokenState(token);
+    };
+
+    const setUser = (userData) => {
+        persistUser(userData);
+        setUserState(userData);
+    };
+
+    const logout = () => {
+        removeAccessToken();
+        removeRefreshToken();
+        removeUser();
+        setAccessTokenState(null);
+        setRefreshTokenState(null);
+        setUserState(null);
+    };
 
     return (
         <AuthContext.Provider
-            value={{ accessToken, refreshToken, user, setAccessToken, setRefreshToken, setUser }
+            value={{ accessToken, refreshToken, user, setAccessToken, setRefreshToken, setUser, logout }
             }
         >
             {children}

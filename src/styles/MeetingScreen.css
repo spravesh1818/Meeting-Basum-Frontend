@@ -1,25 +1,13 @@
-.meeting-screen {
+.meeting-screen-page {
     display: flex;
     flex-direction: column;
     height: 100vh;
     background: #f9fafb;
 }
 
-.meeting-screen-header {
-    height: 64px;
-    width: 100%;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
+.meeting-nav-title {
     display: flex;
     align-items: center;
-    padding: 0 24px;
-    flex-shrink: 0;
-}
-
-.meeting-screen-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #111827;
 }
 
 .meeting-screen-room {
@@ -51,7 +39,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    flex: 1;
+    min-height: 0;
     background: #f9fafb;
     color: #6b7280;
     font-size: 14px;
@@ -122,12 +111,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    flex: 1;
+    min-height: 0;
     background: #f9fafb;
 }
 
 .meeting-share-btn {
-    margin-left: auto;
     padding: 6px 16px;
     border: 1px solid #e5e7eb;
     border-radius: 8px;

@@ -3,10 +3,12 @@ import { useNavigate } from "react-router";
 import "../styles/Dashboard.css";
 import { getMeetings } from "../services/MeetingService";
 import { copyMeetingLink } from "../utils/shareLink";
+import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [meetings, setMeetings] = useState([]);
 
@@ -22,7 +24,7 @@ const Dashboard = () => {
     <div className="main">
 
       <div className="welcome">
-        <h2>Good Morning, Risan Basukala 👋</h2>
+        <h2>Good Morning, {user?.name || "User"} 👋</h2>
         <p>Here's what's happening with your meetings today.</p>
       </div>
 
@@ -71,12 +73,11 @@ const Dashboard = () => {
           <span onClick={() => navigate("/meeting/all")} style={{ cursor: "pointer" }}>View All</span>
         </div>
         {meetings && meetings.map((meeting) => (
-          <div className="meeting-card">
+          <div className="meeting-card" key={meeting._id}>
             <div className="left">
               <div className="mini-icon purple">👥</div>
               <div>
                 <h4>{meeting.title}</h4>
-                <p>Host: Risan Basukala</p>
               </div>
             </div>
 
@@ -87,80 +88,6 @@ const Dashboard = () => {
             </div>
           </div>
         ))}
-
-
-
-        {/* <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon green">👥</div>
-            <div>
-              <h4>Marketing Strategy</h4>
-              <p>Host: Alice</p>
-            </div>
-          </div>
-
-          <div className="right">
-            <p>Today, 02:00 PM - 03:00 PM</p>
-            <button>Join</button>
-          </div>
-        </div> */}
-        {/* <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon green">👥</div>
-            <div>
-              <h4>Marketing Strategy</h4>
-              <p>Host: Alice</p>
-            </div>
-          </div>
-
-          <div className="right">
-            <p>Today, 02:00 PM - 03:00 PM</p>
-            <button>Join</button>
-          </div>
-        </div> */}
-        {/* <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon green">👥</div>
-            <div>
-              <h4>Marketing Strategy</h4>
-              <p>Host: Alice</p>
-            </div>
-          </div>
-
-          <div className="right">
-            <p>Today, 02:00 PM - 03:00 PM</p>
-            <button>Join</button>
-          </div>
-        </div>
-        <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon green">👥</div>
-            <div>
-              <h4>Marketing Strategy</h4>
-              <p>Host: Alice</p>
-            </div>
-          </div>
-
-          <div className="right">
-            <p>Today, 02:00 PM - 03:00 PM</p>
-            <button>Join</button>
-          </div>
-        </div>
-
-        <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon orange">👥</div>
-            <div>
-              <h4>Team Sync-Up</h4>
-              <p>Host: John Doe</p>
-            </div>
-          </div>
-
-          <div className="right">
-            <p>Tomorrow, 11:00 AM - 12:00 PM</p>
-            <button>Join</button>
-          </div>
-        </div> */}
       </div>
 
     </div>
